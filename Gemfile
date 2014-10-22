@@ -12,6 +12,7 @@ gem 'spring',        group: :development
 gem 'bootstrap-sass'
 gem 'devise'
 gem 'simple_form'
+gem 'activeadmin',github: 'activeadmin'
 gem 'therubyracer', :platform=>:ruby
 gem 'thin'
 gem 'omniauth'
