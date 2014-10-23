@@ -14,13 +14,6 @@ gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
-# Use OmniAuth
-gem 'omniauth'
-gem 'omniauth-github', :git => 'git://github.com/intridea/omniauth-github.git'
-gem 'omniauth-openid', :git => 'git://github.com/intridea/omniauth-openid.git'
-gem 'omniauth-qq'
-gem 'omniauth-weibo-oauth2'
-
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -43,10 +36,9 @@ gem 'spring',        group: :development
 # gem 'capistrano-rails', group: :development
 
 # Use debugger
-gem 'debugger', group: [:development, :test]
+# gem 'debugger', group: [:development, :test]
+
 
 gem 'activeadmin',github: 'activeadmin'
 gem 'devise'
-gem 'rmagick'
-gem 'responders'
 gem 'simple_form'
