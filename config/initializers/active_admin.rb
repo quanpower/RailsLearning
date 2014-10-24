@@ -34,15 +34,15 @@ ActiveAdmin.setup do |config|
   #   config.default_namespace = false
   #
   # Default:
-  # config.default_namespace = :admin
+  config.default_namespace = :admin
   #
   # You can customize the settings for each namespace by using
   # a namespace block. For example, to change the site title
   # within a namespace:
   #
-  #   config.namespace :admin do |admin|
-  #     admin.site_title = "Custom Admin Title"
-  #   end
+  config.namespace :admin do |admin|
+    admin.site_title = "智联网管理面板"
+  end
   #
   # This will ONLY change the title for the admin section. Other
   # namespaces will continue to use the main "site_title" configuration.
@@ -101,7 +101,7 @@ ActiveAdmin.setup do |config|
   # link. For example :get, :delete, :put, etc..
   #
   # Default:
-  # config.logout_link_method = :get
+  config.logout_link_method = :get
 
 
   # == Root
@@ -110,7 +110,7 @@ ActiveAdmin.setup do |config|
   # roots for each namespace.
   #
   # Default:
-  # config.root_to = 'dashboard#index'
+  config.root_to = 'dashboard#index'
 
 
   # == Admin Comments
@@ -120,11 +120,14 @@ ActiveAdmin.setup do |config|
   # You can completely disable comments:
   # config.allow_comments = false
   #
+  config.namespace :admin do |admin|
+    admin.allow_comments = true
+  end
   # You can disable the menu item for the comments index page:
   # config.show_comments_in_menu = false
   #
   # You can change the name under which comments are registered:
-  # config.comments_registration_name = 'AdminComment'
+  config.comments_registration_name = 'AdminComment'
 
 
   # == Batch Actions
@@ -144,7 +147,7 @@ ActiveAdmin.setup do |config|
 
   # == Setting a Favicon
   #
-  # config.favicon = '/assets/favicon.ico'
+  config.favicon = '/assets/favicon.ico'
 
 
   # == Removing Breadcrumbs
@@ -186,20 +189,21 @@ ActiveAdmin.setup do |config|
   #
   # To change the default utility navigation to show a link to your website & a logout btn
   #
-  #   config.namespace :admin do |admin|
-  #     admin.build_menu :utility_navigation do |menu|
-  #       menu.add label: "My Great Website", url: "http://www.mygreatwebsite.com", html_options: { target: :blank }
-  #       admin.add_logout_button_to_menu menu
-  #     end
-  #   end
+  config.namespace :admin do |admin|
+    admin.build_menu :utility_navigation do |menu|
+      menu.add label: "SmartLinkCloud", url: "/", html_options: { target: :blank }
+      admin.add_current_user_to_menu menu
+      admin.add_logout_button_to_menu menu
+    end
+  end
   #
   # If you wanted to add a static menu item to the default menu provided:
   #
-  #   config.namespace :admin do |admin|
-  #     admin.build_menu :default do |menu|
-  #       menu.add label: "My Great Website", url: "http://www.mygreatwebsite.com", html_options: { target: :blank }
-  #     end
-  #   end
+  config.namespace :admin do |admin|
+    admin.build_menu :default do |menu|
+      menu.add label: "百度", url: "http://www.baidu.com", html_options: { target: :blank }
+    end
+  end
 
 
   # == Download Links
@@ -209,19 +213,19 @@ ActiveAdmin.setup do |config|
   #
   # To disable/customize for the :admin namespace:
   #
-  #   config.namespace :admin do |admin|
-  #
-  #     # Disable the links entirely
-  #     admin.download_links = false
-  #
-  #     # Only show XML & PDF options
-  #     admin.download_links = [:xml, :pdf]
-  #
-  #     # Enable/disable the links based on block
-  #     #   (for example, with cancan)
-  #     admin.download_links = proc { can?(:view_download_links) }
-  #
-  #   end
+  config.namespace :admin do |admin|
+
+    # Disable the links entirely
+    admin.download_links = true
+
+    # Only show XML & PDF options
+    # admin.download_links = [:xml, :pdf]
+
+    # Enable/disable the links based on block
+    #   (for example, with cancan)
+    # admin.download_links = proc { can?(:view_download_links) }
+
+  end
 
 
   # == Pagination
@@ -229,7 +233,7 @@ ActiveAdmin.setup do |config|
   # Pagination is enabled by default for all resources.
   # You can control the default per page count for all resources here.
   #
-  # config.default_per_page = 30
+  config.default_per_page = 30
 
 
   # == Filters
@@ -238,6 +242,6 @@ ActiveAdmin.setup do |config|
   # hand side with a filter for each attribute of the registered model.
   # You can enable or disable them for all resources here.
   #
-  # config.filters = true
+  config.filters = true
 
 end
