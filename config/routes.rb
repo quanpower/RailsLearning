@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :posts
   devise_for :users
   devise_for :admin_users, ActiveAdmin::Devise.config
   resources :users
