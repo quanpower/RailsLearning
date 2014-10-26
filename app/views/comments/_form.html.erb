@@ -1,0 +1,16 @@
+<%= form_for([@article,@article.comments.build]) do |f| %>
+    <!--to comments create controller-->
+    <p>
+      <%= f.label :commenter %><br>
+      <%= f.text_field :commenter %>
+    </p>
+
+    <P>
+      <%= f.label :body %><br>
+      <%= f.text_area :body %>
+    </P>
+
+    <p>
+      <%= f.submit %>
+    </p>
+<% end %>

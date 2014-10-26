@@ -9,31 +9,11 @@
 </p>
 
 <h2>评论</h2>
-<% @article.comments.each do |comment| %>
-    <P>
-      <strong>评论者<：/strong>
-      <%= comment.commenter %>
-    </P>
-    <p>
-      <strong>评论内容：</strong>
-      <%= comment.body %>
-    </p>
-<% end %>
+<%= render @article.comments  %>
+
+<!--render 方法会遍历 @article.comments 集合-->
 
 <h2>添加评论：</h2>
-<%= form_for([@article,@article.comments.build]) do |f| %>
-    <p>
-      <%= f.label :commenter %><br>
-      <%= f.text_field :commenter %>
-    </p>
+<%= render 'comments/form' %>
 
-    <P>
-      <%= f.label :body %><br>
-      <%= f.text_area :body %>
-    </P>
-
-    <p>
-      <%= f.submit %>
-    </p>
-<% end %>
 <%= link_to '首页', articles_path %> | <%= link_to '编辑',edit_article_path(@article) %>
