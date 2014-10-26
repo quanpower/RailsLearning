@@ -4,7 +4,10 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    render plain: params[:article].inspect
+    @article = Article.new(params[:article])
+
+    @artcile.save
+    redirect_to @article
   end
 
   def new
