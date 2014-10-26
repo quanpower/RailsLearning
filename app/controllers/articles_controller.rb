@@ -6,12 +6,15 @@ class ArticlesController < ApplicationController
   def create
     @article = Article.new(article_params) #健壮参数,模型属性初始化，映射到数据库
 
-    @article.save
-    redirect_to @article #转到show页面
+    if @article.save
+      redirect_to @article #转到show页面
+    else
+      render 'new'
+    end
   end
 
   def new
-
+    @article = Article.new
   end
 
   def edit
