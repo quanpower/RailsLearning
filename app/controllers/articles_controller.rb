@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
 
   http_basic_authenticate_with name: 'quanpower', password: 'caojing1010',except: [:index, :show]
-
+  # 简单的http身份认证
   def index
     @articles = Article.all
   end

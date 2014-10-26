@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
 
   http_basic_authenticate_with name: 'quanpower', password: 'caojing1010', only: :destroy
+  # 简单的http身份认证
 
 
   def create
