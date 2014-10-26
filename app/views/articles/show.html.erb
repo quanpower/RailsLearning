@@ -8,6 +8,18 @@
   <%= @article.text %>
 </p>
 
+<h2>评论</h2>
+<% @article.comments.each do |comment| %>
+    <P>
+      <strong>评论者<：/strong>
+      <%= comment.commenter %>
+    </P>
+    <p>
+      <strong>评论内容：</strong>
+      <%= comment.body %>
+    </p>
+<% end %>
+
 <h2>添加评论：</h2>
 <%= form_for([@article,@article.comments.build]) do |f| %>
     <p>
