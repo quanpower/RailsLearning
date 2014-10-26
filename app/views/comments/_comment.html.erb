@@ -6,3 +6,7 @@
   <strong>大牛点评：</strong>
   <%= comment.body %>
 </p>
+
+<p>
+  <%= link_to '删除评论',[comment.article,comment],method: :delete,data: { confirm:'你确定吗？'} %>
+</p>

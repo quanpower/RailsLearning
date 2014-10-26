@@ -11,7 +11,7 @@
 <h2>评论</h2>
 <%= render @article.comments  %>
 
-<!--render 方法会遍历 @article.comments 集合-->
+<!--render 方法会遍历 @article.comments 集合,@article 变量在所有局部视图中都可使用，因为它是实例变量。-->
 
 <h2>添加评论：</h2>
 <%= render 'comments/form' %>
