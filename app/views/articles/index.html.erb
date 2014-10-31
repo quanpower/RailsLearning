@@ -17,7 +17,7 @@
       <td><%= link_to '展示',article_path(article) %></td>
       <td><%= link_to '编辑',edit_article_path(article) %></td>
       <td><%= link_to '删除',article_path(article),
-                           method: :delete,data: { confirm: '你确定吗？'} %></td>
+                           method: :delete,data: { confirm: '确定删除？'} %></td>
     </tr>
   <% end %>
 </table>
