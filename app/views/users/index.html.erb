@@ -1,9 +1,9 @@
-<h1>Listing users</h1>
+<h1>用户列表</h1>
 
 <table>
   <thead>
   <tr>
-    <th>Name</th>
+    <th>名称</th>
     <th></th>
     <th></th>
     <th></th>
@@ -14,9 +14,9 @@
   <% @users.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to '显示', user %></td>
+        <td><%= link_to '编辑', edit_user_path(user) %></td>
+        <td><%= link_to '删除', user, method: :delete, data: { confirm: '确定删除?' } %></td>
       </tr>
   <% end %>
   </tbody>
@@ -24,4 +24,4 @@
 
 <br>
 
-<%= link_to 'New User', new_user_path %>
+<%= link_to '新建账户', new_user_path %>
