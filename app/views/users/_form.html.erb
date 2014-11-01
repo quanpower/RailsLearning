@@ -4,11 +4,8 @@
     <div class="form-inputs">
       <%= f.input :name, :required => true, :autofocus => true %>
       <%= f.input :about, :required => true %>
-    </div>
-
-    <div class="field">
-      <%= f.file_field :avatar %>
-      <%= f.hidden_field :avatar_cache %>
+      <%= f.input :avatar as: :file %>
+      <%= f.input :avatar_cache as: :hidden %>
     </div>
 
     <div class="form-actions">
