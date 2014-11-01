@@ -240,6 +240,7 @@ Devise.setup do |config|
   config.omniauth :linkedin, ENV["LINKEDIN_KEY"], ENV["LINKEDIN_SECRET"], { :scope => 'r_fullprofile r_emailaddress', :client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}}
   # config.omniauth :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: "user, public_repo"
   config.omniauth :github, "c6959d4eccfb2e534ae5", "d7a0d59d7bd986f46eca7dfc110d4ea192290ab5", scope: "user, public_repo"
+  config.omniauth :qq_connect, ENV['QQ_CONNECT_APP_KEY'], ENV['QQ_CONNECT_APP_SECRET'], {scope: "get_user_info,add_share"}
   config.omniauth :google_oauth2, ENV['GOOGLE_KEY'], ENV['GOOGLE_SECRET'], {}
 
   # ==> Warden configuration

@@ -166,6 +166,9 @@ GEM
       multi_json (~> 1.3)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
+    omniauth-qq-connect (0.2.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
     omniauth-twitter (1.0.1)
       multi_json (~> 1.3)
       omniauth-oauth (~> 1.0)
@@ -278,6 +281,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-linkedin
   omniauth-oauth2
+  omniauth-qq-connect
   omniauth-twitter
   pg
   rails (= 4.1.6)
