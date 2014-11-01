@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
   validates_presence_of :email
   mount_uploader :image, ImageUploader #mount the uploader
+  mount_uploader :avatar, AvatarUploader
   has_many :authorizations
 
   def self.new_with_session(params,session)
