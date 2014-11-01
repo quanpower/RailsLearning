@@ -6,6 +6,11 @@ class UsersController < ApplicationController
   def index
     @users = User.all #否则报nil错误
   end
+
+  def new
+    @user = User.new #否则报nil错误
+  end
+
   # GET /users/1
   def show
   end
