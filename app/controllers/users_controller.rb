@@ -42,6 +42,6 @@ class UsersController < ApplicationController
 
   # STRONG params
   def user_params
-    params.require(:user).permit(:name, :about)
+    params.require(:user).permit(:name, :about, :avatar, :avatar_cache)
   end
 end
