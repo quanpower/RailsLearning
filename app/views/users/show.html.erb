@@ -3,6 +3,8 @@
 <p>
   <strong>名称:</strong>
   <%= (image_tag @user.image_url(:thumb).to_s) %>
+  <%= image_tag(@user.avatar_url(:large)) if @user.avatar %>
+  <!--这里的:large就是指定图片的版本为large 64x64大小-->
   <%= @user.name %>
 </p>
 
