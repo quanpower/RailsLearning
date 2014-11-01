@@ -6,6 +6,11 @@
       <%= f.input :about, :required => true %>
     </div>
 
+    <div class="field">
+      <%= f.file_field :avatar %>
+      <%= f.hidden_field :avatar_cache %>
+    </div>
+
     <div class="form-actions">
       <%= f.button :submit %>
     </div>
