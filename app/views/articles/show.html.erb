@@ -3,13 +3,15 @@
   <%= @article.title %>
 </p>
 
+<%= image_tag(@article.article_image_url(:big)) if @article.article_image? %>
+
 <p>
   <strong>内容：</strong>
   <%= @article.text %>
 </p>
 
 <h2>评论</h2>
-<%= render @article.comments  %>
+<%= render @article.comments %>
 
 <!--render 方法会遍历 @article.comments 集合,@article 变量在所有局部视图中都可使用，因为它是实例变量。-->
 

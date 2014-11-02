@@ -23,6 +23,12 @@
   <%= f.text_area :text %>
 </p>
 
+
+<div class="field">
+<%= f.file_field :article_image %>
+<%= f.hidden_field :article_image_cache %>
+</div>
+
 <p>
   <%= f.submit %>
 </p>
