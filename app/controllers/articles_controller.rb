@@ -49,4 +49,5 @@ class ArticlesController < ApplicationController
     def article_params
       params.require(:article).permit(:title, :text, :article_image, :article_image_cache, :remote_article_image_url)
     end
+    # 强类型params
 end
