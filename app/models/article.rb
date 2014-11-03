@@ -3,6 +3,6 @@ class Article < ActiveRecord::Base
   validates :title, presence: true,
             length: { minimum: 5 }
   mount_uploader :article_image, ArticleImageUploader
-  mount_uploader :video, VideoUploader
+# mount_uploader :video, VideoUploader
 
 end
