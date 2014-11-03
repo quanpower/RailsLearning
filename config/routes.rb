@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   resources :users
 
+  resources :rtc
+
   resources :articles do
     resources :comments
   end
