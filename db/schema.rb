@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141105154123) do
+ActiveRecord::Schema.define(version: 20141105155020) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -176,6 +176,19 @@ ActiveRecord::Schema.define(version: 20141105154123) do
   end
 
   add_index "headers", ["thinghttp_id"], name: "index_headers_on_thinghttp_id"
+
+  create_table "plugins", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.text     "html"
+    t.text     "css"
+    t.text     "js"
+    t.boolean  "public_flag", default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "plugins", ["user_id"], name: "index_plugins_on_user_id"
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
