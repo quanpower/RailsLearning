@@ -12,6 +12,9 @@ class CreateTaggings < ActiveRecord::Migration
   end
 
   def down
+    remove_index :taggings, :tag_id
+    remove_index :taggings, :channel_id
+
     drop_table :taggings
   end
 end

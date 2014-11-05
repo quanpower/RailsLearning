@@ -10,6 +10,8 @@ class CreateTags < ActiveRecord::Migration
   end
 
   def down
+    remove_index :tags, :name
+
     drop_table :tags
   end
 end
