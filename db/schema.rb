@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141105124110) do
+ActiveRecord::Schema.define(version: 20141105132734) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -126,6 +126,13 @@ ActiveRecord::Schema.define(version: 20141105124110) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "channels", ["latitude", "longitude"], name: "index_channels_on_latitude_and_longitude"
+  add_index "channels", ["public_flag", "last_entry_id", "updated_at"], name: "channels_public_viewable"
+  add_index "channels", ["ranking", "updated_at"], name: "index_channels_on_ranking_and_updated_at"
+  add_index "channels", ["realtime_io_serial_number"], name: "index_channels_on_realtime_io_serial_number"
+  add_index "channels", ["slug"], name: "index_channels_on_slug"
+  add_index "channels", ["user_id"], name: "index_channels_on_user_id"
 
   create_table "comments", force: true do |t|
     t.string   "commenter"
