@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141105152729) do
+ActiveRecord::Schema.define(version: 20141105154123) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -166,6 +166,16 @@ ActiveRecord::Schema.define(version: 20141105152729) do
 
   add_index "feeds", ["channel_id", "created_at"], name: "index_feeds_on_channel_id_and_created_at"
   add_index "feeds", ["channel_id", "entry_id"], name: "index_feeds_on_channel_id_and_entry_id"
+
+  create_table "headers", force: true do |t|
+    t.string   "name"
+    t.string   "value"
+    t.integer  "thinghttp_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "headers", ["thinghttp_id"], name: "index_headers_on_thinghttp_id"
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
