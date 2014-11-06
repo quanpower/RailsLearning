@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106033848) do
+ActiveRecord::Schema.define(version: 20141106035805) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -135,14 +135,17 @@ ActiveRecord::Schema.define(version: 20141106033848) do
   add_index "channels", ["user_id"], name: "index_channels_on_user_id"
 
   create_table "comments", force: true do |t|
-    t.string   "commenter"
     t.text     "body"
-    t.integer  "article_id"
+    t.integer  "channel_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "parent_id"
+    t.integer  "flags"
+    t.integer  "user_id"
+    t.string   "ip_address"
   end
 
-  add_index "comments", ["article_id"], name: "index_comments_on_article_id"
+  add_index "comments", ["channel_id"], name: "index_comments_on_channel_id"
 
   create_table "feeds", force: true do |t|
     t.integer  "channel_id"
