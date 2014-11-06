@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106150314) do
+ActiveRecord::Schema.define(version: 20141106151917) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -365,6 +365,20 @@ ActiveRecord::Schema.define(version: 20141106150314) do
   add_index "timecontrols", ["run_at"], name: "index_timecontrols_on_run_at"
   add_index "timecontrols", ["schedulable_id", "schedulable_type"], name: "index_timecontrols_on_schedulable_id_and_schedulable_type"
   add_index "timecontrols", ["user_id"], name: "index_timecontrols_on_user_id"
+
+  create_table "tweetcontrols", force: true do |t|
+    t.string   "screen_name"
+    t.string   "trigger"
+    t.string   "control_type"
+    t.integer  "control_key"
+    t.string   "control_string"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tweetcontrols", ["screen_name"], name: "index_tweetcontrols_on_screen_name"
+  add_index "tweetcontrols", ["user_id"], name: "index_tweetcontrols_on_user_id"
 
   create_table "twitter_accounts", force: true do |t|
     t.string   "screen_name"
