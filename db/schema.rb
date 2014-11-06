@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106132211) do
+ActiveRecord::Schema.define(version: 20141106134438) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -167,6 +167,24 @@ ActiveRecord::Schema.define(version: 20141106132211) do
   end
 
   add_index "daily_feeds", ["channel_id", "date"], name: "index_daily_feeds_on_channel_id_and_date"
+
+  create_table "devices", force: true do |t|
+    t.integer  "user_id"
+    t.string   "title"
+    t.string   "model"
+    t.string   "ip_address"
+    t.integer  "port"
+    t.string   "mac_address"
+    t.string   "local_ip_address"
+    t.integer  "local_port"
+    t.string   "default_gateway"
+    t.string   "subnet_mask"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "devices", ["mac_address"], name: "index_devices_on_mac_address"
+  add_index "devices", ["user_id"], name: "index_devices_on_user_id"
 
   create_table "failedlogins", force: true do |t|
     t.string   "login"
