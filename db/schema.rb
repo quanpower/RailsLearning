@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106142027) do
+ActiveRecord::Schema.define(version: 20141106144142) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -308,6 +308,18 @@ ActiveRecord::Schema.define(version: 20141106142027) do
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name"
+
+  create_table "talkbacks", force: true do |t|
+    t.string   "api_key",    limit: 16
+    t.integer  "user_id"
+    t.string   "name"
+    t.integer  "channel_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "talkbacks", ["api_key"], name: "index_talkbacks_on_api_key"
+  add_index "talkbacks", ["user_id"], name: "index_talkbacks_on_user_id"
 
   create_table "twitter_accounts", force: true do |t|
     t.string   "screen_name"
