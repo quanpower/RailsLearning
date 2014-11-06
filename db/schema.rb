@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106071820) do
+ActiveRecord::Schema.define(version: 20141106072811) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -285,5 +285,24 @@ ActiveRecord::Schema.define(version: 20141106071820) do
   end
 
   add_index "watchings", ["user_id", "channel_id"], name: "index_watchings_on_user_id_and_channel_id"
+
+  create_table "windows", force: true do |t|
+    t.integer  "channel_id"
+    t.integer  "position"
+    t.text     "html"
+    t.integer  "col"
+    t.string   "title"
+    t.string   "window_type"
+    t.string   "name"
+    t.boolean  "private_flag", default: false
+    t.boolean  "show_flag",    default: true
+    t.integer  "content_id"
+    t.text     "options"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "windows", ["channel_id"], name: "index_windows_on_channel_id"
+  add_index "windows", ["window_type", "content_id"], name: "index_windows_on_window_type_and_content_id"
 
 end
