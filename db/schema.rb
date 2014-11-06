@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106035805) do
+ActiveRecord::Schema.define(version: 20141106071820) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -147,6 +147,14 @@ ActiveRecord::Schema.define(version: 20141106035805) do
 
   add_index "comments", ["channel_id"], name: "index_comments_on_channel_id"
 
+  create_table "failedlogins", force: true do |t|
+    t.string   "login"
+    t.string   "password"
+    t.string   "ip_address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "feeds", force: true do |t|
     t.integer  "channel_id"
     t.string   "field1"
@@ -268,5 +276,14 @@ ActiveRecord::Schema.define(version: 20141106035805) do
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+
+  create_table "watchings", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "channel_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "watchings", ["user_id", "channel_id"], name: "index_watchings_on_user_id_and_channel_id"
 
 end
