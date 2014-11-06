@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106134438) do
+ActiveRecord::Schema.define(version: 20141106135456) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -185,6 +185,15 @@ ActiveRecord::Schema.define(version: 20141106134438) do
 
   add_index "devices", ["mac_address"], name: "index_devices_on_mac_address"
   add_index "devices", ["user_id"], name: "index_devices_on_user_id"
+
+  create_table "events", force: true do |t|
+    t.integer  "timecontrol_id"
+    t.datetime "run_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "events", ["run_at"], name: "index_events_on_run_at"
 
   create_table "failedlogins", force: true do |t|
     t.string   "login"
