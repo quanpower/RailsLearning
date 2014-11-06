@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106144142) do
+ActiveRecord::Schema.define(version: 20141106145106) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -320,6 +320,26 @@ ActiveRecord::Schema.define(version: 20141106144142) do
 
   add_index "talkbacks", ["api_key"], name: "index_talkbacks_on_api_key"
   add_index "talkbacks", ["user_id"], name: "index_talkbacks_on_user_id"
+
+  create_table "thinghttps", force: true do |t|
+    t.integer  "user_id"
+    t.string   "api_key",      limit: 16
+    t.text     "url"
+    t.string   "auth_name"
+    t.string   "auth_pass"
+    t.string   "method"
+    t.string   "content_type"
+    t.string   "http_version"
+    t.string   "host"
+    t.text     "body"
+    t.string   "name"
+    t.string   "parse"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "thinghttps", ["api_key"], name: "index_thinghttps_on_api_key"
+  add_index "thinghttps", ["user_id"], name: "index_thinghttps_on_user_id"
 
   create_table "twitter_accounts", force: true do |t|
     t.string   "screen_name"
