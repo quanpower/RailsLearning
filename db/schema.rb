@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106081716) do
+ActiveRecord::Schema.define(version: 20141106132211) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -133,6 +133,17 @@ ActiveRecord::Schema.define(version: 20141106081716) do
   add_index "channels", ["realtime_io_serial_number"], name: "index_channels_on_realtime_io_serial_number"
   add_index "channels", ["slug"], name: "index_channels_on_slug"
   add_index "channels", ["user_id"], name: "index_channels_on_user_id"
+
+  create_table "commands", force: true do |t|
+    t.string   "command_string"
+    t.integer  "position"
+    t.integer  "talkback_id"
+    t.datetime "executed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "commands", ["talkback_id", "executed_at"], name: "index_commands_on_talkback_id_and_executed_at"
 
   create_table "comments", force: true do |t|
     t.text     "body"
