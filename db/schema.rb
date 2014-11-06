@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106145106) do
+ActiveRecord::Schema.define(version: 20141106150314) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -340,6 +340,31 @@ ActiveRecord::Schema.define(version: 20141106145106) do
 
   add_index "thinghttps", ["api_key"], name: "index_thinghttps_on_api_key"
   add_index "thinghttps", ["user_id"], name: "index_thinghttps_on_user_id"
+
+  create_table "timecontrols", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "schedulable_id"
+    t.string   "schedulable_type",  limit: 50
+    t.string   "frequency",         limit: 20
+    t.integer  "day",               limit: 1
+    t.integer  "hour",              limit: 1
+    t.integer  "minute",            limit: 1
+    t.integer  "parent_id"
+    t.datetime "last_event_at"
+    t.text     "last_response"
+    t.string   "name"
+    t.datetime "run_at"
+    t.integer  "fuzzy_seconds",                default: 0
+    t.string   "schedulable_value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "timecontrols", ["frequency", "minute", "hour", "day"], name: "index_timecontrols_on_frequency_and_minute_and_hour_and_day"
+  add_index "timecontrols", ["parent_id"], name: "index_timecontrols_on_parent_id"
+  add_index "timecontrols", ["run_at"], name: "index_timecontrols_on_run_at"
+  add_index "timecontrols", ["schedulable_id", "schedulable_type"], name: "index_timecontrols_on_schedulable_id_and_schedulable_type"
+  add_index "timecontrols", ["user_id"], name: "index_timecontrols_on_user_id"
 
   create_table "twitter_accounts", force: true do |t|
     t.string   "screen_name"
