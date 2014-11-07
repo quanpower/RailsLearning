@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'api_keys/index'
+
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
 
   devise_for :admin_users, ActiveAdmin::Devise.config
