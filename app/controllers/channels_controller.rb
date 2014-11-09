@@ -18,6 +18,10 @@ class ChannelsController < ApplicationController
     render :json => channels.to_json(:root => false, :only => [:id, :realtime_io_serial_number])
   end
 
+  # view list of watched channels
+  def watched
+    @channels = current_user.watched_channels
+  end
 
-  
+
 end
