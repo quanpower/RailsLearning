@@ -17,5 +17,5 @@ module ApplicationHelper
   def TT(symbol)
     t(symbol).titleize
   end
-  
+
 end
