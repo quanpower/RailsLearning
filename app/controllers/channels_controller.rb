@@ -10,5 +10,14 @@ class ChannelsController < ApplicationController
   require 'csv'
   require 'will_paginate/array'
 
+  # get list of all realtime channels
+  def realtime
+    # error if no key
+    respond_with_error(:error_auth_required) and return if params[:realtime_key] != REALTIME_DAEMON_KEY
+    channels = Channel.where("realtime_io_serial_number IS NOT NULL")
+    render :json => channels.to_json(:root => false, :only => [:id, :realtime_io_serial_number])
+  end
+
+
   
 end
