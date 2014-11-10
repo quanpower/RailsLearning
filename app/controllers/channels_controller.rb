@@ -23,5 +23,21 @@ class ChannelsController < ApplicationController
     @channels = current_user.watched_channels
   end
 
+  # user watches a channel
+  def watch
+    @watching = Watching.find_by_user_id_and_channel_id(current_user.id, params[:id])
+
+    # add watching
+    if params[:flag] == 'true'
+      @watching = Watching.new(:user_id => current_user.id, :channel_id => params[:id]) if @watching.nil?
+      @watching.save
+    else
+      # delete watching
+      @watching.delete if !@watching.nil?
+    end
+
+    render :text => '1'
+  end
+  
 
 end
