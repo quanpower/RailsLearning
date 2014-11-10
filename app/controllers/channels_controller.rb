@@ -78,4 +78,10 @@ class ChannelsController < ApplicationController
     end
   end
 
+  # widget for social feeds
+  def social_feed
+    # get domain based on ssl
+    @domain = domain((get_header_value('x_ssl') == 'true'))
+  end
+
 end
