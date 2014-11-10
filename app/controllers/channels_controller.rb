@@ -106,7 +106,46 @@ class ChannelsController < ApplicationController
   end
 
   def social_create
-    
+    @channel = Channel.new(channel_params)
+
+    # check for blank name
+    @channel.errors.add(:base, t(:social_channel_error_name_blank)) if @channel.name.blank?
+
+    # check for blank slug
+    @channel.errors.add(:base, t(:social_channel_error_slug_blank)) if @channel.slug.blank?
+
+    # check for at least one field
+    fields = false
+    @channel.attribute_names.each do |attr|
+      if (attr.index('field') or attr.index('status')) and !@channel[attr].blank?
+        fields = true
+        break
+      end
+    end
+    @channel.errors.add(:base, t(:social_channel_error_fields)) if !fields
+
+    # check for existing slug
+    if @channel.errors.count == 0
+      @channel.errors.add(:base, t(:social_channel_error_slug_exists)) if Channel.find_by_slug(@channel.slug)
+    end
+
+    # if there are no errors
+    if @channel.errors.count == 0
+      @channel.user_id = current_user.id
+      @channel.social = true
+      @channel.public_flag = true
+      @channel.save
+
+      # create an api key for this channel
+      channel.add_write_api_key
+
+      redirect_to channels_path
+    else
+      render :action => :social_new
+    end
+
   end
+
+  
 
 end
