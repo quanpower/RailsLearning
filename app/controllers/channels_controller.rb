@@ -84,4 +84,8 @@ class ChannelsController < ApplicationController
     @domain = domain((get_header_value('x_ssl') == 'true'))
   end
 
+  def social_new
+    @channel = Channel.now
+  end
+
 end
