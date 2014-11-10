@@ -105,4 +105,8 @@ class ChannelsController < ApplicationController
     end
   end
 
+  def social_create
+    
+  end
+
 end
