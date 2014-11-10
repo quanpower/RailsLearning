@@ -88,4 +88,21 @@ class ChannelsController < ApplicationController
     @channel = Channel.now
   end
 
+  # main page for a socialsensornetwork.com projet
+  def social_show
+    @channel = Channel.find_by_slug(params[:slug])
+
+    # redirect home if wrong slug
+    redirect_to '/' and return if @channel.nil?
+
+    api_key = ApiKey.where(channel_id: @channel.id, write_flag: 1).first
+    @post_url = "/update?key=#{api_key.api_key}"
+
+    #name of non_blank channel fields
+    @fields = []
+    @channel.attribute_names.each do |attr|
+      @fields.push(attr) if attr.index('field') and !@channel[attr].blank?
+    end
+  end
+
 end
