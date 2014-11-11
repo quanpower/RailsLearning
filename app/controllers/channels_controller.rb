@@ -155,4 +155,40 @@ class ChannelsController < ApplicationController
     end
   end
 
+  def show
+    @channel = Channel.find(params[:id]) if params[:id]
+
+    @title = @channel.name
+    @domain = domain
+    @mychannel = (current_user && current_user.id == @channel.user_id)
+    @width = Chart.default_width
+    @height = Chart.default_height
+
+    api_index @channel.id
+    # if owner of channel
+    get_channel_data if @mychannel
+
+    #if a json or xml request
+    if request.format == :json || request.format == :xml
+      # authenticate the channel if the user owns the channel
+      anthenticated = (@mychannel) || (User.find_by_api_key(get_apikey) == @channel.user)
+      # set options correctly
+      options = authenticated ? Channel.private_options : Channel.public_options
+    end
+
+    respond_to do |format|
+      format.html do
+        if @mychannel
+          render "private show"
+          session[:errors] =nil
+        else
+          render "public show"
+          session[:errors] = nil
+        end
+      end
+      format.json { render :json => @channel.as_json(options)}
+      format.xml { render :xml => @channel.to_xml(options)}
+    end
+  end
+
 end
