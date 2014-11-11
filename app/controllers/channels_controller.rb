@@ -191,4 +191,8 @@ class ChannelsController < ApplicationController
     end
   end
 
+  def edit
+    get_channel_data
+  end
+
 end
