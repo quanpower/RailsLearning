@@ -226,4 +226,27 @@ class ChannelsController < ApplicationController
     end
   end
 
+  def create
+    # get the current user or find the user via their api key
+    @user = current_user || User.find_by_api_key(get_apikey)
+    channel = @user.channels.create(:field1 => "#{t(:channel_default_field)} 1")
+
+    # make updating attributes easier
+    params[:channel] = paramas
+    channel.update_attributes(channel_params)
+
+    channel.set_windows(true)
+    channel.save
+    channel.save_tags(params[:channel][:tags]) if params[:channel][:tags].present?
+    channel.add_write_api_key
+    channel.set_ranking
+    @channel_id = channel.id
+
+    respond_to do |format|
+      format.json { render :json => channel.to_json(Channel.private_options)}
+      format.xml { render :xml => channel.to_xml(Channel.private_options)}
+      format.any { redirect_to channel_path(@channel_id, :anchor => "channelsettings")}
+    end
+  end
+
 end
