@@ -249,4 +249,17 @@ class ChannelsController < ApplicationController
     end
   end
 
+  # clear all data from a schannel
+  def clear
+    # get the current user or find the user via their api key
+    @user = current_user || User.find_by_api_key(get_apikey)
+    channel = @user.channels.find(params[:id])
+    channel.delete_feeds
+    respond_to do |format|
+      format.json { render :json => []}
+      format.xml { render :xml => []}
+      format.any { redirect_to channel_path(channel.id)}
+    end
+  end
+
 end
