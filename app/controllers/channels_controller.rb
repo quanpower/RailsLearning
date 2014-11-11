@@ -262,4 +262,19 @@ class ChannelsController < ApplicationController
     end
   end
 
+  def destroy
+    # get the current user or find the user via their api key
+    @user = current_user || User.find_by_api_key(get_apikey)
+    @channel = @user.channels.find(params[:id])
+    @channel.destroy
+    respond_to do |format|
+      format.json { render :json => channel.to_json(Channel.public_options)}
+      format.xml { render :xml => channel.to_xml(Channel.public_options)}
+      format.any { redirect_to channel_path, :status => 303}
+    end
+  end
+
+
+
+
 end
