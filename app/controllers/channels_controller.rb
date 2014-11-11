@@ -274,6 +274,32 @@ class ChannelsController < ApplicationController
     end
   end
 
+  # post from realtime.io daemon
+  def realtime_update
+    # exit if not authenticated
+    respond_with_error(:error_auth_required) and return if params[:realtime_key] != REALTIME_DAEMON_KEY
+
+    # set feed and channel
+    feed = Feed.new
+    channel = Channel.find(params[:id])
+
+    # update entry_id for channel and feed
+    entry_id = channel.next_entry_id
+    channel.last_entry_id = entry_id
+    feed.entry_id = entry_id
+    # set user agent
+    channel.user_agent = 'realtime.io'
+
+    # set feed details
+    feed.channel_id = channel.id
+    feed.status = params[:status]
+
+    # save channel and feed
+    channel.save
+    feed.save
+
+    render :nothing => true
+  end
 
 
 
