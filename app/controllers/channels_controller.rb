@@ -567,4 +567,12 @@ class ChannelsController < ApplicationController
   end
 
 
+
+
+  private
+    # only allow these params
+    def channel_params
+      params.require(:channel).permit(:name, :url, :description, :metadata, :latitude, :longitude, :field1, :field2, :field3, :field4, :field5, :field6, :field7, :field8, :elevation, :public_flag, :status, :video_id, :video_type)
+    end
+
 end
