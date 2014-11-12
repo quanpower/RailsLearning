@@ -301,6 +301,125 @@ class ChannelsController < ApplicationController
     render :nothing => true
   end
 
+  # response is '0' if failure, 'entry_id' if success
+  def post_data
+
+    status = '0'
+    feed = Feed.new
+
+    api_key = ApiKey.find_by_api_key(get_apikey)
+
+    # if write permission, allow post
+    if (api_key && api_key.write_flag)
+      channel = api_key.channel
+
+      # don't rate limit if tstream parameter is present
+      tstream = params[:tstream] || false;
+
+      # dont't rate limit if talkback_key parameter is present
+      talkback_key = params[:talkback_key] || false;
+
+      # rate limit post if channel is not social and timespan is smaller than the allowed window
+      render :text => '0' and return if (RATE_LIMIT && !tstream && !talkback_key && !channel.social && Time.now < channel.updated_at + RATE_LIMIT_FREQUENCY.to_i.seconds)
+
+      # if social channel, latitude must be present
+      render :text => '0' and return if (channel.social && params[:latitude].blank?)
+
+      #update entry_id for channel and feed
+      entry_id = channel.next_entry_id
+      channel.last_entry_id = entry_id
+      feed.entry_id = entry_id
+
+      #set user agent
+      channel.user_agent = get_header_value('USER_AGENT')
+
+      # try to get created_at datetime if appropriate
+      if params[:created_at].present?
+        begin
+          feed.created_at = ActiveSupport::TimeZone[Time.zone.name].parse(params[:created_at])
+          # if invalid datetime, don't do anything--rails will set created_at
+        rescue
+
+        end
+      end
+
+      # modify parameters
+      params.each do |key,value|
+        # this fails so much due to encoding problems that we need to ignore errors
+        begin
+          # strip line feeds from end of parameters
+          params[key] = value.sub(/\\n$/, '').sub(/\\r$/,'') if value
+          # use ip address if found
+          params[key] = get_header_value('X_REAL_IP') if value.try(:upcase) == 'IP_ADDRESS'
+        rescue
+        end
+      end
+
+      # set feed details
+      feed.channel_id = channel.id
+      feed.field1 = params[:field1] || params['1'] if params[:field1] || params['1']
+      feed.field2 = params[:field2] || params['2'] if params[:field2] || params['2']
+      feed.field3 = params[:field3] || params['3'] if params[:field3] || params['3']
+      feed.field4 = params[:field4] || params['4'] if params[:field4] || params['4']
+      feed.field5 = params[:field5] || params['5'] if params[:field5] || params['5']
+      feed.field6 = params[:field6] || params['6'] if params[:field6] || params['6']
+      feed.field7 = params[:field7] || params['7'] if params[:field7] || params['7']
+      feed.field8 = params[:field8] || params['8'] if params[:field8] || params['8']
+      feed.status = params[:status] if params[:status]
+      feed.latitude = params[:lat] if params[:lat]
+      feed.latitude = params[:latitude] if params[:latitude]
+      feed.longitude = params[:long] if params[:long]
+      feed.longitude = params[:longitude] if params[:longitude]
+      feed.elevation = params[:elevation] if params[:elevation]
+      feed.location = params[:location] if params [:location]
+
+      # if the saves were successful
+      if channel.save && feed.save
+        status = entry_id
+
+        # check for tweet
+        if params[:twitter] && params[:tweet]
+          # check username
+          twitter_account = TwitterAccount.find_by_user_id_and_screen_name(api_key.user_id, params[:twitter])
+          if twitter_account
+            twitter_account.tweet(params[:tweet])
+          end
+        end
+      else
+        raise "Channel or Feed didin't save correctly"
+      end
+    end
+
+    # if there is a talkback to execute
+    if params[:talkback_key].present?
+      talkback = Talkback.find_by_api_key(params[:talkback_key])
+      command = talkback.execute_command! if talkback.present?
+    end
+
+    # output respond code
+    render (:text => '0', :status => 400) and return if status == '0'
+
+    # if there is a talkback_key and a command that was executed
+    if params[:talkback_key].present? && command.present?
+      respond_to do |format|
+        format.html { render :text => command.command_string }
+        format.json { render :json => command.to_json}
+        format.xml { render :xml => command.to_xml(Command.public_options)}
+      end and return
+    end
+
+    # if there is a talkback_key but no command
+    respond_with_blank and return if params[:talkback_key].present? && command.blank?
+
+    # normal route,respond with the feed
+    respond_to do |format|
+      format.html { render :text => status}
+      format.json { render :json => feed.to_json }
+      format.xml {render :xml => feed.to_xml(Feed.public_options) }
+      format.any { render :text => status}
+    end and return
+  end
+
 
 
 end
