@@ -420,6 +420,10 @@ class ChannelsController < ApplicationController
     end and return
   end
 
+  # import view
+  def import
+    get_channel_data
+  end
 
 
 end

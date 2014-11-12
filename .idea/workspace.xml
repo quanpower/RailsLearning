@@ -81,8 +81,8 @@
       <file leaf-file-name="channels_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/channels_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.021672" vertical-offset="7417" max-vertical-offset="7758">
-              <caret line="304" column="3" selection-start-line="304" selection-start-column="3" selection-end-line="304" selection-end-column="3" />
+            <state vertical-scroll-proportion="0.6656347" vertical-offset="7417" max-vertical-offset="7830">
+              <caret line="424" column="20" selection-start-line="424" selection-start-column="20" selection-end-line="424" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -1145,8 +1145,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/channels_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.021672" vertical-offset="7417" max-vertical-offset="7758">
-          <caret line="304" column="3" selection-start-line="304" selection-start-column="3" selection-end-line="304" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.6656347" vertical-offset="7417" max-vertical-offset="7830">
+          <caret line="424" column="20" selection-start-line="424" selection-start-column="20" selection-end-line="424" selection-end-column="20" />
           <folding />
         </state>
       </provider>
