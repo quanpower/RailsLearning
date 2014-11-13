@@ -35,4 +35,39 @@ class ChartsController < ApplicationController
     check_permissions(@channel)
   end
 
+  # show a chart with multiple series
+  def multiple_series
+    render :layout => false
+  end
+
+  def show
+    # allow these parameters when creating feed querystring
+    feed_params = ['key', 'api_key', 'apikey', 'days', 'start', 'end', 'round', 'timescale', 'average', 'median', 'sum', 'results', 'location', 'status', 'timezone']
+
+    # set chart size
+    width = params[:width].present? ? params[:width] : Chart.default_width
+    @width_style = (width = 'auto') ? '' : "width: #{width.to_i - 25}px"
+    height = params[:height].present? ? params[:height] : Chart.default_height
+    @height_style = (height == 'auto') ? '' : "height: #{height.to_i - 25}px"
+
+    # add extra parameters to querystring
+    @qs = ''
+    params.each do |p|
+      @qs += "&#{p[0]}=#{p[1]}" if feed_params.include?(p[0])
+    end
+
+    # fix chart colors if necessary
+    params[:color] = fix_color(params[:color])
+    params[:bgcolor] = fix_color(params[:bgcolor])
+
+    # set ssl
+    ssl = (get_header_value('x_ssl') == 'true')
+    @domain = domain(ssl)
+
+    # should data be pushed off the end in dynamic chart
+    @push = (params[:push] and params[:push] == 'false') ? false : true
+    @results = params[:results]
+    render :layout => flase
+  end
+
 end
