@@ -96,6 +96,16 @@ class ChartsController < ApplicationController
     render :json => @status.to_json
   end
 
-  
+  private
+
+  # fixes chart color if user forgets the loading '#'
+  def fix_color(color)
+    # check for 3 or 6 character hexadecimal value
+    if (color and color.match(/^([0-9]|[a-f]|[A-F]){3}(([0-9]|[a-f]|[A-F]){3})?$/))
+      color = '#' + color
+    end
+
+    return color
+  end
 
 end
