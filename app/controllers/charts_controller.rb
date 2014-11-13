@@ -98,7 +98,7 @@ class ChartsController < ApplicationController
 
   private
 
-  # fixes chart color if user forgets the loading '#'
+  # fixes chart color if user forgets the leading '#'
   def fix_color(color)
     # check for 3 or 6 character hexadecimal value
     if (color and color.match(/^([0-9]|[a-f]|[A-F]){3}(([0-9]|[a-f]|[A-F]){3})?$/))
