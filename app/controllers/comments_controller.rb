@@ -26,7 +26,23 @@ class CommentsController < ApplicationController
     redirect_to :back
   end
 
-  
+  def vote
+    # make sure this a post
+    render :text => '' and retuen if !request.post?
+
+    @comment = Comment.find(params[:id])
+    @comment.flags += 1
+
+    # delete if too many flags
+    if (@comment.flags > 3)
+      @comment.destroy
+      render :text => ''
+    # else save
+    else
+      @comment.save
+      render :text => '1'
+    end
+  end
 
   def destroy
     @article = Article.find(params[:article_id])
