@@ -70,4 +70,32 @@ class ChartsController < ApplicationController
     render :layout => flase
   end
 
+  # save chart options
+  def update
+    @channel = Channel.find(params[:channel_id])
+    @status = 0
+
+    # check permissions
+    if current_user.present? && @channel.user_id == current_user.id
+      logger.debug "Saving Data with new options" + params[:newOptions].to_s
+      # save data
+      if params[:newOptions]
+        logger.debug "Updating new style options on window id #{params[:id]} with #{params[:newOptions][:options]}"
+        window = @channel.windows.find(params[:id])
+        window.options = params[:newOptions][:options]
+        if !window.save
+          raise "Couldn't save the Chart Window"
+        end
+      end
+      if @channel.save
+        @status =1
+      end
+    end
+
+    # return response: 1 =success, 0 = failure
+    render :json => @status.to_json
+  end
+
+  
+
 end
