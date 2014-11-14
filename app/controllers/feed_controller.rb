@@ -80,4 +80,9 @@ class FeedController < ApplicationController
     last_method.call('medians')
   end
 
+  def last_average
+    last_method = method('last_group_call')
+    last_method.call('averages')
+  end
+
 end
