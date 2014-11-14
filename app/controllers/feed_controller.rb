@@ -110,6 +110,45 @@ class FeedController < ApplicationController
     create_group_result(feed)
   end
 
+  def create_group_result(feed)
+    @success = channel_permission?(@channel, @api_key)
+
+    #if a feed needs to be rounded
+    if params[:round] && feed.present?
+      feed = item_round(feed, params[:round].to_i)
+    end
+
+    # check for access
+    if @success && feed.present?
+      # set output correctly
+      if params[:format] == 'xml'
+        output = feed.to_xml
+      elsif params[:format] == 'csv'
+        @csv_headers = Feed.select_options(@channel, params)
+      elsif (params[:format] == 'txt' or params[:format] == 'text')
+        output = add_prepend_append(feed["field#{params[:field_id]}"])
+      else
+        output = feed.to_json
+      end
+
+    else
+      if params[:format] == 'xml'
+        output = bad_feed_xml
+      else
+        output = '-1'.to_json
+      end
+    end
+
+    # output data in proper format
+    respond_to do |format|
+      format.html { render :json => output }
+      format.json { render :json => output, :callback => params[:callback] }
+      format.xml { render :xml => output }
+      format.csv
+      format.text { render :text => output }
+    end
+  end
+
 
 
 end
