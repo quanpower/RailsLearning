@@ -70,4 +70,9 @@ class FeedController < ApplicationController
     end
   end
 
+  def last_sum
+    last_method = method('last_group_call')
+    last_method.call('sums')
+  end
+
 end
