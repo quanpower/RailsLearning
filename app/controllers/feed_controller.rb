@@ -85,4 +85,31 @@ class FeedController < ApplicationController
     last_method.call('averages')
   end
 
+  def last_group_call(arg)
+    @channel = Channel.find(params[:channel_id])
+    @api_key = ApiKey.find_by_api_key(get_apikey)
+
+    # limit for the number of results to get
+    limit = 30
+    limit = params[:sum].to_i if params[:sum].present?
+    limit = params[:median].to_i if params[:median].present?
+    limit = params[:average].to_i if params[:average].present?
+    # max limit of 100 past results
+    limit = 100 if limit > 100
+
+    # get the last (limit) feeds
+    last_feeds = Feed.where(:channel_id => @channel.id).limit(limit).order('created_at desc')
+    # put feeds in correct order (oldest to most recent)
+    last_feeds.reverse!
+
+    # check if the correct param is present by getting the param name from arg,e.g.:'median' from 'medians'
+    correct_params_present = params[arg.chop.to_sym].present?
+
+    feeds_into = self.method("feeds_into_#{arg}")
+    feed = feeds_into.call(last_feeds, params).last if last_feeds.length > 0 && correct_params_present
+    create_group_result(feed)
+  end
+
+
+
 end
