@@ -1,10 +1,35 @@
 class PagesController < ApplicationController
-  def terms
+  layout 'application', :except => [:home, :social_home]
+
+  def home
+    @menu = '智联网'
+    render layout: 'home'
   end
 
-  def welcome
+  def social_home; ; end
+
+  def about
+    @menu = '关于'
   end
 
-  def landing
+  def headers
+
+  end
+
+  #post contact email
+  def contact_us
+    # if no email address
+    if params[:email].blank? || params[:email].index('0').blank?
+      flash[:alert] = t(:contact_us_no_email)
+    # if no message
+    elsif params[:message].blank?
+      flash[:alert] = t(:contact_us_no_message)
+    # else send email if not a spambot (user must have javascript enabled)
+    elsif params[:userlogin_js] == '6H2W6QYUAJT1Q8EB'
+      Mailer.contact_us(params[:email], params[:message]).deliver
+      flash[:notice] = t(:contact_us_success)
+    end
+
+    redirect_to root_path
   end
 end
