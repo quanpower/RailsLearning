@@ -149,6 +149,83 @@ class FeedController < ApplicationController
     end
   end
 
+  def show
+    @channel = Channel.find(params[:channel_id])
+    @api_key = ApiKey.find_by_api_key(get_apikey)
+    output = '-1'
+
+    # make sure field parameter is set correctly, changes "field1" to "1"
+    params[:field_id] = params[:field_id].sub('field', '') if params[:field_id].present?
+
+    # if last entry
+    if params[:id] == 'last' && params[:field_id].present? && params[:field_id].to_i != 0
+      begin
+        # add a timeout since this query may be really long if there is a lot of data,
+        # but the last instance of the field is very far back
+        Timeout.timeout(5, Timeout::Error) do
+          # look for a feed where the value isn't null
+          @feed = Feed.where(:channel_id => @channel.id)
+            .where("field? is not null", params[:field_id].to_i)
+            .select(Feed.select_options(@channel, params))
+            .order('entry_id desc')
+            .first
+        end
+      rescue Timeout::Error
+      rescue
+      end
+    # else get by entry
+    else
+      # get most recent entry if necessary
+      params[:id] = @channel.last_entry_id if params[:id] == 'last'
+      @feed = Feed.where(:channel_id => @channel.id, :entry_id => params[:id]).select(Feed.select_options(@channel, params)).first
+    end
+
+    @success = channel_permission?(@channel, @api_key)
+
+    # if a feed needs to be rounded
+    if params[:round]
+      @feed = item_round(@feed, params[:round].to_i)
+    end
+
+    # check for access
+    if @success and @feed
+
+      # set output correctly
+      if params[:format] == 'xml'
+        output = @feed.to_xml
+      elsif params[:format] == 'csv'
+        @csv_headers = Feed.select_options(@channel, params)
+      elsif (params[:format] == 'txt' || params[:format] == 'text' || params[:format] == 'html' || params[:format].blank?)
+
+        # if no field_id, just return the json feed
+        if params[:field_id].blank?
+          output = @feed.to_json
+        # if the  field exists
+        elsif @feed.attributes.keys.include?("field#{params[:field_id]}")
+          output = add_prepend_append(@feed["field#{params[:field_id]}"])
+        end
+      else
+        output = @feed.to_json
+      end
+    # else set error code
+    else
+      if params[:format] == 'xml'
+        output = bad_feed_xml
+      else
+        output = '-1'.to_json
+      end
+    end
+
+    # output data in proper format
+    respond_to do |format|
+      format.html { render :text => output }
+      format.json { render :json => output, :callback => params[:callback] }
+      format.xml { render :xml => output }
+      format.csv
+      format.text { render :text => output }
+    end
+  end
+
 
 
 end
