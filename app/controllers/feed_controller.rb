@@ -48,7 +48,9 @@ class FeedController < ApplicationController
           Rails.cache.write(feed_output_cache_key, @feed_output, :expires_in => 5.minutes)
           Rails.cache.write(channel_output_cache_key, @channel_output, :expires_in => 5.minutes)
         end
+
       end #end if feeds not empty
+
     # else no access, set error code
     else
       if params[:format] =='xml'
@@ -226,6 +228,31 @@ class FeedController < ApplicationController
     end
   end
 
+  def debug
+    @time_start = Time.now
 
+    channel = Channel.find(params[:channel_id])
+    api_key = ApiKey.find_by_api_key(get_apikey)
+    @success = channel_permission?(channel, api_key)
 
+    # create options hash
+    select_options = Feed.select_options(channel, params)
+
+    # get feeds
+    feeds = Feed.where(channel_id: channel.id, created_at: get_date_range(params)).select(select_options).order('created_at desc')
+
+    @count = feeds.count
+    @time_after_db = Time.now
+
+    # sort properly
+    feeds.reverse!
+
+    @time_after_sort = Time.now
+
+    @channel_output = channel.to_json(channel.select_options(params)).chop
+    @feed_output = feeds.to_json
+
+    @time_after_json = Time.now
+  end
+  
 end
