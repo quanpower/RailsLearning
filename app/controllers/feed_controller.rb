@@ -254,5 +254,5 @@ class FeedController < ApplicationController
 
     @time_after_json = Time.now
   end
-  
+
 end
