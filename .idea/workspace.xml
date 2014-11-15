@@ -84,8 +84,8 @@
       <file leaf-file-name="maps_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/maps_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.3343654" vertical-offset="181" max-vertical-offset="756">
-              <caret line="34" column="2" selection-start-line="34" selection-start-column="2" selection-end-line="34" selection-end-column="2" />
+            <state vertical-scroll-proportion="1.5015479" vertical-offset="271" max-vertical-offset="918">
+              <caret line="42" column="9" selection-start-line="42" selection-start-column="9" selection-end-line="42" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -1083,8 +1083,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/maps_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.3343654" vertical-offset="181" max-vertical-offset="756">
-          <caret line="34" column="2" selection-start-line="34" selection-start-column="2" selection-end-line="34" selection-end-column="2" />
+        <state vertical-scroll-proportion="1.5015479" vertical-offset="271" max-vertical-offset="918">
+          <caret line="42" column="9" selection-start-line="42" selection-start-column="9" selection-end-line="42" selection-end-column="9" />
           <folding />
         </state>
       </provider>

@@ -32,5 +32,14 @@ class MapsController < ApplicationController
     @map_domain = @ssl ? 'https://maps-api-ssl.google.com' : 'http://maps.google.com'
     @domain = domain(@ssl)
   end
-  
+
+
+  private
+    def default_width
+      450
+    end
+
+    def default_height
+      250
+    end
 end
