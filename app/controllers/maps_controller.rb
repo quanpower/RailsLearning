@@ -5,7 +5,11 @@ class MapsController < ApplicationController
     set_map_vars
     render :layout => false
   end
-  
 
+  # show social map with feed points as markers
+  def show
+    set_map_vars
+    render :layout => false
+  end
 
 end
