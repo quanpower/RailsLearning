@@ -78,4 +78,51 @@ class StatusController < ApplicationController
       format.csv { render :template => 'feed/index'}
     end
   end
+
+  def show
+    @channel = Channel.find(params[:channel_id])
+    @api_key = ApiKey.find_by_api_key(get_apikey)
+    output = '-1'
+
+    # get most recent entry if necessary
+    params[:id] = @channel.last_entry_id if params[:id] == 'last'
+
+    @feed = @channel.feeds.where(entry_id: params[:id]).select([:created_at, :entry_id, :status]).first
+
+    @success = channel_permission?(@channel, @api_key)
+
+    # check for access
+    if @success
+      # set output correctly
+
+      if request.format = 'xml'
+        output = @feed.to_xml
+      elsif request.format = 'csv'
+        @csv_headers = [:created_at, :entry_id, :status]
+      elsif (request.format == 'txt' or request.format == 'text')
+        output = add_prepend_append(@feed_status)
+      else
+        output = @feed.to_json
+      end
+
+    # else set error code
+    else
+      if request.format == 'xml'
+        output = bad_feed_xml
+      else
+        output = '-1'.to_json
+      end
+    end
+
+    # output data in proper format
+    respond_to do |format|
+      format.html { render :json => output}
+      format.json { render :json => output, :callback => params[:callback] }
+      format.xml { render :xml => output}
+      format.csv { render :action => 'feed/show'}
+      format.text { render :text => output}
+    end
+  end
+
+  
 end
