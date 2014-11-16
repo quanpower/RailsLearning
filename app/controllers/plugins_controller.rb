@@ -115,4 +115,23 @@ class PluginsController < ApplicationController
 
     render :layout => false
   end
+
+  def show_public
+    @plugin = Plugin.find(params[:id])
+    @output = @plugin.html.sub('%%PLUGIN_CSS%%', @plugin.css).sub('%%PLUGIN_JAVASCRIPT%%', @plugin.js)
+    if @plugin.private?
+      render :layout => false
+    else
+      if request.url.include? 'api_domain'
+        render :layout => false
+      else
+        redirect_to :host => api_domain,
+                    :controller => "plugins",
+                    :action => "show",
+                    :id => @plugin.id
+      end
+    end
+  end
+
+  
 end
