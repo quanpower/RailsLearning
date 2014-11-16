@@ -124,5 +124,15 @@ class StatusController < ApplicationController
     end
   end
 
-  
+  private
+
+  # only output these fields for channel
+  def channel_select_terse(channel)
+    only = [:name]
+    only += [:latitude] unless channel.latitude.nil?
+    only += [:longitude] unless channel.longitude.nil?
+    only += [:elevation] unless channel.elevation.nil? or channel.elevation.empty?
+
+    return only
+  end
 end
