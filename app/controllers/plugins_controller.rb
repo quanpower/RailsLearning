@@ -133,5 +133,19 @@ class PluginsController < ApplicationController
     end
   end
 
+  def update
+    @plugin.update_attribute(:name, params[:plugin][:name])
+    @plugin.update_attribute(:public_flag, params[:plugin][:public_flag])
+    @plugin.update_attribute(:css, params[:plugin][:css])
+    @plugin.update_attribute(:js, params[:plugin][:js])
+    @plugin.update_attribute(:html, params[:plugin][:html])
+
+    if @plugin.save
+      @plugin.update_all_windows
+      flash[:notice] = I18n.t(:plugin_save_message)
+      redirect_to edit_plugin_path(@plugin) and return
+    end
+  end
+
   
 end
