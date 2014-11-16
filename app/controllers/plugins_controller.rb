@@ -39,5 +39,20 @@ class PluginsController < ApplicationController
     end
   end
 
+  def public_plugins
+    channel_id = params[:channel_id].to_i
+    return if channel_id.nil?
+    @plugin_windows = []
+    plugins = current_user.plugins
+    plugins.each do |plugin|
+      plugin.make_windows channel_id, api_domain #will only make the window the first time
+      @plugin_windows = @plugin_windows + plugin.public_dashboard_windows(channel_id)
+    end
+
+    respond_to do |format|
+      format.html { render :partial => 'plugins'}
+    end
+  end
+
   
 end
