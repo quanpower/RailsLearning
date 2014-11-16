@@ -168,5 +168,5 @@ class PluginsController < ApplicationController
     @plugin.destroy
     redirect_to plugins_path
   end
-  
+
 end
