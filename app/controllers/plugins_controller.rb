@@ -147,5 +147,20 @@ class PluginsController < ApplicationController
     end
   end
 
-  
+  def ajax_update
+    status = 0
+    @plugin.update_attribute(:name, params[:plugin][:name])
+    @plugin.update_attribute(:public_flag, params[:plugin][:public_flag])
+    @plugin.update_attribute(:css, params[:plugin][:css])
+    @plugin.update_attribute(:js, params[:plugin][:js])
+    @plugin.update_attribute(:html, params[:plugin][:html])
+
+    if @plugin.save
+      @plugin.update_all_windows
+      status = 1
+    end
+
+    # return response: 1 =success, 0 = failure
+    render :json => status.to_json
+  end
 end
