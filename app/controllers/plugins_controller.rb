@@ -163,4 +163,10 @@ class PluginsController < ApplicationController
     # return response: 1 =success, 0 = failure
     render :json => status.to_json
   end
+
+  def destroy
+    @plugin.destroy
+    redirect_to plugins_path
+  end
+  
 end
