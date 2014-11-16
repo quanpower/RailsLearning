@@ -29,4 +29,15 @@ class PluginsController < ApplicationController
       format.xml { render :xml => Plugin.paginated_hash(@plugins).to_xml(:root => 'response')}
     end
   end
+
+  def index
+    @plugins = current_user.plugins
+    respond_to do |format|
+      format.html
+      format.json { render :json => @plugins.to_json(Plugin.public_options) }
+      format.xml { render :xml => @plugins.to_xml(Plugin.public_options) }
+    end
+  end
+
+  
 end
