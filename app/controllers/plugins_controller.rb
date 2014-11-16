@@ -103,4 +103,16 @@ class PluginsController < ApplicationController
     redirect_to edit_plugin_path(@plugin.id)
   end
 
+  def show
+    @plugin = Plugin.find(params[:id])
+
+    # make sure the user can access this plugin
+    if (@plugin.private?)
+      respond_with_error(:error_auth_required) and return if current_user.blank? || (@plugin.user_id != current_user.id)
+    end
+
+    @output = @plugin.html.sub('%%PLUGIN_CSS%%', @plugin.css).sub('%%PLUGIN_JAVASCRIPT%%', @plugin.js)
+
+    render :layout => false
+  end
 end
