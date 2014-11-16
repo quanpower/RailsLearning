@@ -72,5 +72,35 @@ class PluginsController < ApplicationController
       format.html { render :partial => 'plugins' }
     end
   end
-  
+
+  def create
+    # add plugin with defaults
+    @plugin = Plugin.new
+
+    # set default template
+    template = 'default'
+
+    # use case statement to set template, since user input is untrusted
+    case params[:template]
+      when 'gauge' then template = 'gauge'
+      when 'chart' then template = 'chart'
+    end
+
+    # set template dynamically
+    @plugin.html = read_file("app/views/plugins/templates/#{template}.html")
+    @plugin.css = read_file("app/views/plugins/templates/#{template}.css")
+    @plugin.js = read_file("app/views/plugins/templates/#{template}.js")
+
+    @plugin.user_id = current_user.id
+    @plugin.public_flag = false
+    @plugin.save
+
+    # now that the plugin is saved, we can create the default name
+    @plugin.name = "#{t(:plugin_default_name)} #{@plugin.id}"
+    @plugin.save
+
+    # redirect to edit the newly created plugin
+    redirect_to edit_plugin_path(@plugin.id)
+  end
+
 end
