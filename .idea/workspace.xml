@@ -104,8 +104,8 @@
       <file leaf-file-name="status_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/status_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.83928573" vertical-offset="114" max-vertical-offset="540">
-              <caret line="22" column="2" selection-start-line="22" selection-start-column="2" selection-end-line="22" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.6785714" vertical-offset="1194" max-vertical-offset="1566">
+              <caret line="79" column="4" selection-start-line="79" selection-start-column="4" selection-end-line="79" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -1093,8 +1093,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/status_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.83928573" vertical-offset="114" max-vertical-offset="540">
-          <caret line="22" column="2" selection-start-line="22" selection-start-column="2" selection-end-line="22" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.6785714" vertical-offset="1194" max-vertical-offset="1566">
+          <caret line="79" column="4" selection-start-line="79" selection-start-column="4" selection-end-line="79" selection-end-column="4" />
           <folding />
         </state>
       </provider>
