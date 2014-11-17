@@ -101,5 +101,34 @@ class WindowsController < ApplicationController
     end
   end
 
+  # This is going to display windows that are hidden (show_flag = false)
+  # The "Visibility_flag" param indicates whether it's public or private visibility
+  def hidden_windows
+    @visibility = params[:visibility_flag]
+    channel = Channel.find(params[:channel_id])
+
+    if @visibility == "private"
+      @windows = channel.private_windows(false) unless channel.nil?
+    else
+      @windows = channel.public_windows(false) unless channel.nil?
+    end
+    @windows.reject! { |window| window.window_type == "plugin" }
+    @windows.each do |window|
+      if window.window_type == "plugin"
+      elsif window.window_type == "chart"
+        window.title = t(window.title, {:field_number => window.content_id})
+        options = window.options unless window.nil?
+        options ||= ""
+        window.html["::OPTIONS::"] = options unless window.html.nil? || window.html.index("::OPTIONS::").nil?
+      else
+        window.title = t(window.title)
+      end
+    end
+
+    respond_to do |format|
+      format.html { render :partial => "hidden_windows" }
+      format.json { render :json => @windows.as_json }
+    end
+  end
 
 end
