@@ -67,4 +67,21 @@ class StreamController < ApplicationController
   ensure
     response.stream.close
   end
+
+  def stream_chunked_example
+    #response.headers['Content-Type'] = 'text/event-stream'
+    response.headers['Content-Type'] = 'text/csv'
+    response.headers['Content-Disposition'] = 'attachment; filename=feeds.csv'
+    response.headers['Transfer-Encoding'] = 'chunked'
+
+    10.times {
+      response.stream.write "4\n" #size must be in hex format?
+      response.stream.write "hel\n\n"
+      sleep 1
+    }
+    response.stream.write "0\n\n"
+  ensure
+    response.stream.close
+  end
+  
 end
