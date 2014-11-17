@@ -51,5 +51,16 @@ class WindowsController < ApplicationController
     end
   end
 
+  def html
+    window = Window.find(params[:id])
+    options = window.options unless window.nil? || window.window_type != "chart"
+    window.html["::OPTIONS::"] = options unless window.html.nil? || window.html.index("::OPTIONS::").nil?
+    html = window.html
+
+    render :text => html
+  end
+
   
+
+
 end
