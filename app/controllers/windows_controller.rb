@@ -37,6 +37,19 @@ class WindowsController < ApplicationController
     end
   end
 
-  
+  def config_window(window)
+    if window.window_type = "plugin"
+      pluginName = Plugin.find(window.content_id).name
+      window.title = t(window.title, {:name => pluginName})
+    elsif window.window_type == "chart"
+      window.title = t(window.title, {:field_number => window.content_id})
+      options = window.options if !window.nil?
+      options ||= ""
+      window.html["::OPTIONS::"] = options unless window.html.nil? || window.html.index("::OPTIONS::").nil?
+    else
+      window.title = t(window.title)
+    end
+  end
 
+  
 end
