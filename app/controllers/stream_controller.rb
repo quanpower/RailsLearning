@@ -83,5 +83,5 @@ class StreamController < ApplicationController
   ensure
     response.stream.close
   end
-  
+
 end
