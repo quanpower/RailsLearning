@@ -51,4 +51,20 @@ class StreamController < ApplicationController
   ensure
     response.stream.close
   end
+
+  def stream_example
+    # get the channel
+    #channel = Channel.find(params[:channel_id])
+
+    # stream the response
+    #response.headers['Content-Type'] = 'text/csv'
+    #response.headers['Content-Disposition'] = 'attachment; filename=feeds.csv'
+
+    20.times {
+      response.stream.write "hello world\n"
+      sleep 1
+    }
+  ensure
+    response.stream.close
+  end
 end
