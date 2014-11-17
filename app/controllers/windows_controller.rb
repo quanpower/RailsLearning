@@ -60,7 +60,15 @@ class WindowsController < ApplicationController
     render :text => html
   end
 
-  
+  def iframe
+    window = Window.find(params[:id])
+    options = window.options unless window.nil? || window.window_type != "chart"
+    window.html["::OPTIONS::"] = options unless window.html.nil? || window.html.index("::OPTIONS::").nil?
+    iframe_html = window.html
+
+    iframe_html = iframe_html.gsub(/src=\"[\/.]/, 'src="' + api_domain);
+    render :text => iframe_html
+  end
 
 
 end
