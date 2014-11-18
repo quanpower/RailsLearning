@@ -161,4 +161,42 @@ class WindowsController < ApplicationController
     end
   end
 
+  def update
+    logger.info "We're trying to update the windows with " + params.to_s
+    #params for this put are going to look like
+    #  page"=>"{\"col\":0,\"positions\":[1,2,3]}"
+    #So.. the position values are Windows.id  They should get updated with the ordinal value based
+    # on their array position and the column should get updated according to col value.
+    # Since the windows are order by position, when a window record changes from
+    # col1,position0 -> col0,position0 the entire new column is reordered.
+    # The old column is missing a position, but the remaining are just left to their order
+    # (ie., 0,1,2 become 1,2)  Unless they are also changed
+
+    # First parse the JSON in params["page"] ...
+    values = JSON(params[:page])
+
+    # .. then find each window and update with new ordinal position and col.
+    logger.info "Channel id = " + params[:channel_id].to_s
+    @channel = current_user.channels.find(params[:channel_id])
+    col = values["col"]
+    saved = true
+    values["positions"].each_with_index do |p,i|
+      windows = @channel.windows.where({:id => p}) unless p.nil?
+      unless windows.nil? || windows.empty?
+        w = windows[0]
+        w.position = i
+        w.col = col
+        if !w.save
+          saved = false
+        end
+      end
+    end
+    if saved
+      render :text => '0'
+    else
+      render :text => '-1'
+    end
+
+  end
+
 end
