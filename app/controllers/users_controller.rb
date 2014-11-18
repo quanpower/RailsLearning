@@ -32,3 +32,11 @@ class UsersController < ApplicationController
       format.any { render :text => user.authentication_token }
     end
   end
+
+  # generates a new api key
+  def new_api_key
+    current_user.set_new_api_key!
+    redirect_to account_path
+  end
+  
+end
