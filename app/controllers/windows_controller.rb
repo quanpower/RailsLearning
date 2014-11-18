@@ -131,4 +131,34 @@ class WindowsController < ApplicationController
     end
   end
 
+  def private_windows
+    channel = Channel.find(params[:channel_id])
+    windows = channel.private_windows(true).order(:position) unless params[:channel_id].nil?
+
+    if channel.recent_statuses.nil? || channel.recent_statuses.size <= 0
+      @windows = windows.delete_if { |w| w.window_type == "status" }
+    else
+      @windows = windows
+    end
+
+    @windows.each do |window|
+      if window.window_type == "plugin"
+        pluginName = Plugin.find(window.content_id).name
+        window.title = t(window.title, {:name => pluginName})
+      elsif window.window_type == "chart"
+        window.title = t(window.title, {:field_number => window.content_id})
+        options = window.options unless window.nil?
+        options ||= ""
+        window.html["::OPTIONS::"] = options unless window.html.nil? || window.html.index("::OPTIONS::").nil?
+      else
+        window.title = t(window.title)
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @windows.as_json}
+    end
+  end
+
 end
