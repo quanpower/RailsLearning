@@ -113,5 +113,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+    @menu = 'account'
+    @user = @current_user
+  end
+
 
 end
