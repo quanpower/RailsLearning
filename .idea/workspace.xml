@@ -94,8 +94,8 @@
       <file leaf-file-name="users_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/users_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35714287" vertical-offset="2346" max-vertical-offset="2718">
-              <caret line="137" column="30" selection-start-line="137" selection-start-column="30" selection-end-line="137" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.8885449" vertical-offset="2431" max-vertical-offset="2844">
+              <caret line="151" column="2" selection-start-line="151" selection-start-column="2" selection-end-line="151" selection-end-column="2" />
               <folding>
                 <element signature="e#4413#4446#0" expanded="true" />
               </folding>
@@ -1078,8 +1078,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/users_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35714287" vertical-offset="2346" max-vertical-offset="2718">
-          <caret line="137" column="30" selection-start-line="137" selection-start-column="30" selection-end-line="137" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.8885449" vertical-offset="2431" max-vertical-offset="2844">
+          <caret line="151" column="2" selection-start-line="151" selection-start-column="2" selection-end-line="151" selection-end-column="2" />
           <folding>
             <element signature="e#4413#4446#0" expanded="true" />
           </folding>

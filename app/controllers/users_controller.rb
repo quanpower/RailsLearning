@@ -142,5 +142,12 @@ class UsersController < ApplicationController
     end
   end
 
+  private
 
+  # only allow these params
+  def user_params
+    params.require(:user).permit(:email, :login, :time_zone, :public_flag, :bio, :website, :password, :password_confirmation)
+  end
+
+  
 end
