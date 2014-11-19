@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     user = User.find_by_login_or_email(params[:login])
 
     # exit if no user or invalid password
-    respond_with_error(:error_auth_required) and return if user.blank? || !user.valid_password?(params[:password])
+    respond_with_error (:error_auth_required) and return if user.blank? || !user.valid_password?(params[:password])
 
     # save new authentication token
     if user.authentication_token.blank?
@@ -27,9 +27,9 @@ class UsersController < ApplicationController
 
     # output the user with token
     respond_to do |format|
-      format.json { render :json => user.as_json(User.private_options_plus(:authentication_token)) }
-      format.xml { render :xml => user.to_xml(User.private_options_plus(:authentication_token)) }
-      format.any { render :text => user.authentication_token }
+      format.json { render :json => user.as_json(User.private_options_plus(:authentication_token))}
+      format.xml { render :xml => user.to_xml(User.private_options_plus(:authentication_token))}
+      format.any { render :text => user.authentication_token}
     end
   end
 
@@ -38,5 +38,9 @@ class UsersController < ApplicationController
     current_user.set_new_api_key!
     redirect_to account_path
   end
-  
+
+  # edit public profile
+  def edit_profile
+    @user = current_user
+  end
 end
