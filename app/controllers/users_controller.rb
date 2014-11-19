@@ -63,5 +63,27 @@ class UsersController < ApplicationController
     render :text => t(:user_not_found) and return if @user.nil?
 
     # set page title
+    @title = @user.login || nil
+
+    # if a json or xml request
+    if request.format == :json || request.format == :xml
+      # authenticate the user if the user is logged in (can be via token) or api key mathes the target user
+      authenticated = (current_user == @user) || (User.find_by_api_key(get_apikey) == @user)
+      # set options correctly
+      options = authenticated ? User.private_options : User.public_options(@user)
+    end
+
+    # if html request
+    if request.format == :html
+      @channels = @user.channels.public_viewable.paginate :page => params[:page], :order => 'last_entry_id DESC'
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @user.as_json(options)}
+      format.xml { render :xml => @user.to_xml(options)}
+    end
   end
+
+  
 end
