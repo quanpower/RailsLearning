@@ -85,5 +85,33 @@ class UsersController < ApplicationController
     end
   end
 
-  
+  # list all public channels for a user
+  def list_channels
+    @user = User.find_by_login(params[:id])
+
+    # output error if user not found
+    render :text => t(:user_not_found) and return if @user.nil?
+
+    # if html request
+    if request.format == :html
+      @title = "Internet of Things - Public Channels for #{@user.login}"
+      @channels = @user.channels.public_viewable.paginate :page => params[:page], :order => 'last_entry_id DESC'
+    # if a json or xml request
+    elsif request.format == :json || request.format == :xml
+      # authenticate the user if api key matches the targer user
+      authenticated = (User.find_by_api_key(get_apikey) == @user)
+      # get all channels if authenticate, otherwise only public ones
+      channels = authenticated ? @user.channels : @user.channels.public_viewable
+      # set channels correctly
+      @channels = { channels: channels.as_json(Channel.public_options)}
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @channels}
+      format.xml { render :xml => @channels.to_xml(:root => 'response')}
+    end
+  end
+
+
 end
