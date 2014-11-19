@@ -43,4 +43,14 @@ class UsersController < ApplicationController
   def edit_profile
     @user = current_user
   end
+
+  # update public profile
+  def update_profile
+    @user = current_user # make our views "cleaner" and more consistent
+    # update
+    @user.update_attributes(user_params)
+    redirect_to account_path
+  end
+
+  
 end
