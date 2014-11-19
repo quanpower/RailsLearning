@@ -123,4 +123,24 @@ class UsersController < ApplicationController
     @user = @current_user
   end
 
+  def update
+    @menu = 'account'
+    @user = @current_user # makes our views "cleaner" and more consistent
+
+    # delete password and confirmation from params if not present
+    params[:user].delete(:password) if params[:user][:password].blank?
+
+    # check current password and update
+    if @user.valid_password?(params[:user][:password_current]) && @user.update_attributes(user_params)
+      # sign the user back in, since devise will log the user out on update
+      sign_in(current_user, :bypass => true)
+      flash[:notice] =t('devise.registrations.updated')
+      redirect_to account_path
+    else
+      @user.errors.add(:base, t(:password_incorrect))
+      render :action => :edit
+    end
+  end
+
+
 end
