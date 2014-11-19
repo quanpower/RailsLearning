@@ -52,5 +52,16 @@ class UsersController < ApplicationController
     redirect_to account_path
   end
 
-  
+  # public profile for a user
+  def profile
+    # set params and request.format correctly
+    set_request_details!(params)
+
+    @user = User.find_by_login(params[:id])
+
+    # output error if user not found
+    render :text => t(:user_not_found) and return if @user.nil?
+
+    # set page title
+  end
 end
