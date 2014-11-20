@@ -1,11 +1,6 @@
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  # protect_from_forgery with: :exception
-
   skip_before_filter :verify_authenticity_token
-
-  # include all helper for controllers
+  # include all helpers for controllers
   helper :all
   # include these helper methods for views
   helper_method :current_user_session, :current_user, :logged_in?, :get_header_value, :to_bytes
@@ -30,8 +25,8 @@ class ApplicationController < ActionController::Base
     error_response = ErrorResponse.new(error_code)
     respond_to do |format|
       format.html { render :text => error_response.error_code, :status => error_response.http_status }
-      format.json { render :json => error_response.to_json, :status => error_response.http_status}
-      format.xml { render :xml => error_response.to_xml, :status => error_response.http_status}
+      format.json { render :json => error_response.to_json, :status => error_response.http_status }
+      format.xml { render :xml => error_response.to_xml, :status => error_response.http_status }
     end
   end
 
@@ -49,7 +44,7 @@ class ApplicationController < ActionController::Base
     params[:sum] = '1440' if params[:sum] == 'daily'
   end
 
-  # change default devise sign_in page;make admins sign in work correctly
+  # change default devise sign_in page; make admins sign in work correctly
   def after_sign_in_path_for(resource)
     if resource.is_a?(AdminUser)
       admin_dashboard_path
@@ -68,7 +63,7 @@ class ApplicationController < ActionController::Base
     sign_in(user, store: false) if user.present?
   end
 
-  # get the locale,but don't fail if header value doesn't exist
+  # get the locale, but don't fail if header value doesn't exist
   def get_locale
     locale = get_header_value('HTTP_ACCEPT_LANGUAGE')
 
@@ -101,7 +96,7 @@ class ApplicationController < ActionController::Base
     # get the user by login or email
     user = User.find_by_login_or_email(params[:login])
 
-    # safe compare,avoids timing attacks
+    # safe compare, avoids timing attacks
     if user.present? && Devise.secure_compare(user.authentication_token, params[:token])
       sign_in user, store: false
     end
@@ -145,7 +140,7 @@ class ApplicationController < ActionController::Base
     logger.info "Require User"
     if current_user.nil? && User.find_by_api_key(get_apikey).nil?
       respond_to do |format|
-        format.html {
+        format.html   {
           session[:link_back] = request.url
           logger.debug "Redirecting to login"
           redirect_to login_path
@@ -176,14 +171,14 @@ class ApplicationController < ActionController::Base
   end
 
   def store_location
-    if params[:controller] != "user sessions"
+    if params[:controller] != "user_sessions"
       session[:return_to] = request.fullpath
     end
   end
 
   def redirect_back_or_default(default)
-    redirect_to(session[:redirect_to] || default)
-    session[:return_to] =nil
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil
   end
 
   def domain(ssl=true)
@@ -194,7 +189,6 @@ class ApplicationController < ActionController::Base
     rescue
       u += '/'
     end
-
     u = u.sub(/http:/, 'https:') if (Rails.env == 'production' and ssl)
     return u
   end
@@ -206,7 +200,7 @@ class ApplicationController < ActionController::Base
   # domain for the api
   def api_domain(ssl=false)
     output = (Rails.env == 'production') ? API_DOMAIN : domain
-    output = output.sub(/http:/, 'https') if ssl == true
+    output = output.sub(/http:/, 'https:') if ssl == true
     return output
   end
 
@@ -215,7 +209,7 @@ class ApplicationController < ActionController::Base
 
   # gets the api key
   def get_apikey
-    key = get_header_value(HTTP_HEADER_API_NAME) || params[:key] || params[:api_key] || params[:apikey]
+    key = get_header_value(HTTP_HEADER_API_KEY_NAME) || params[:key] || params[:api_key] || params[:apikey]
     key.strip if key.present?
     return key.to_s
   end
@@ -223,7 +217,7 @@ class ApplicationController < ActionController::Base
   # get specified header value
   def get_header_value(name)
     name.upcase!
-    request.env.select {|header| header.upcase.index(name)}.values[0]
+    request.env.select {|header| header.upcase.index(name) }.values[0]
   end
 
   # generates a hash key unique to the user and url
@@ -254,7 +248,7 @@ class ApplicationController < ActionController::Base
     return output
   end
 
-  #prepends or appends text
+  # prepends or appends text
   def add_prepend_append(input)
     output = input.to_s
     output = params[:prepend] + output if params[:prepend]
@@ -300,14 +294,19 @@ class ApplicationController < ActionController::Base
   # options: days = how many days ago, start = start date, end = end date, offset = timezone offset
   def get_date_range(params)
     # allow more past data if necessary
-    get_old_data = (params[:result].present? || params[:start].present? || params[:days].present?) ? true :false
+    get_old_data = (params[:results].present? || params[:start].present? || params[:days].present?) ? true : false
 
-    #set default start date
+    # set default start and end dates
     start_date = (get_old_data) ? Time.parse('2010-01-01') : (Time.now - 1.day)
     end_date = Time.now
-    start_date = (Time.now - params[:days].to_i.days) if params[:days]
-    start_date = ActiveSupport::TimeZone[Time.zone.name].parse(params[:start]) if params[:start]
-    end_date = ActiveSupport::TimeZone[Time.zone.name].parse(params[:end]) if params[:end]
+
+    # set new start and end dates if necessary
+    start_date = (Time.now - params[:days].to_i.days) if params[:days].present?
+    start_date = (Time.now - params[:minutes].to_i.minutes) if params[:minutes].present?
+    start_date = ActiveSupport::TimeZone[Time.zone.name].parse(params[:start]) if params[:start].present?
+    end_date = ActiveSupport::TimeZone[Time.zone.name].parse(params[:end]) if params[:end].present?
+
+    # set the date range
     date_range = (start_date..end_date)
     # only get a maximum of 30 days worth of data
     date_range = (end_date - 30.days..end_date) if ((end_date - start_date) > 30.days and !get_old_data)
@@ -331,7 +330,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # use the offset to find an appropriate time
+  # use the offset to find an appropriate timezone
   def set_timezone_from_offset(offset)
     offset = offset.to_i
     # always set to UTC if offset is 0
@@ -348,10 +347,10 @@ class ApplicationController < ActionController::Base
       timestring = Time.now.in_time_zone(current_zone).to_s
 
       # if time zone matches the offset, leave current_zone alone
-      break if (current_zone != 'UTC' && timestring.slice(-5..-3).to_i ==offset && timestring.slice(-2..-1).to_i == 0)
+      break if (current_zone != 'UTC' && timestring.slice(-5..-3).to_i == offset && timestring.slice(-2..-1).to_i == 0)
     end
 
-    # if no time zone found,set to utc
+    # if no time zone found, set to utc
     return current_zone.present? ? current_zone : 'UTC'
   end
 
@@ -363,5 +362,5 @@ class ApplicationController < ActionController::Base
     include Singleton
     include ActionView::Helpers::TextHelper
   end
-
 end
+

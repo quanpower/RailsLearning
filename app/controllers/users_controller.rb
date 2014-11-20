@@ -149,5 +149,5 @@ class UsersController < ApplicationController
     params.require(:user).permit(:email, :login, :time_zone, :public_flag, :bio, :website, :password, :password_confirmation)
   end
 
-  
+
 end
