@@ -149,5 +149,18 @@ class UsersController < ApplicationController
     params.require(:user).permit(:email, :login, :time_zone, :public_flag, :bio, :website, :password, :password_confirmation)
   end
 
+  # set params[:id] and request.format correctly
+  def set_request_details!(params)
+    # set format
+    new_format = 'html' if params[:glob].end_with?('.html')
+    new_format = 'json' if params[:glob].end_with?('.json')
+    new_format = 'xml' if params[:glob].end_with?('.xml')
+
+    # remove the format from the end of the glob
+    params[:id] = params[:glob].chomp(".#{new_format}")
+
+    # set the new format if it exists
+    request.format = new_format.to_sym if new_format.present?
+  end
 
 end
