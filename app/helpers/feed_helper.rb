@@ -36,6 +36,28 @@ module FeedHelper
     return item
   end
 
+  # gets the median for an object
+  def object_median(object, comma_flag=false, round=nil)
+    return nil if object.nil?
+    length = object.length
+    return nil if length == 0
+    output = ''
 
-  
+    # do the calculation
+    if length % 2 == 0
+      output = (object[(length - 1) / 2] + object[length / 2]) / 2
+    else
+      output = object[(length - 1) / 2]
+    end
+
+    output = sprintf "%.#{round}f", output if round and is_a_number?(output)
+
+    # replace decimals with commas if appropriate
+    output = output.to_s.gsub(/\./, ',') if comma_flag
+
+    return output.to_s
+  end
+
+
+
 end
