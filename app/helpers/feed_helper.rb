@@ -94,5 +94,10 @@ module FeedHelper
     return object
   end
 
+  def create_empty_clone(object)
+    empty_clone = object.dup
+    empty_clone.attribute_names.each { |attr| empty_clone[attr] = nil }
+    return empty_clone
+  end
 
 end
