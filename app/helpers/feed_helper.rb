@@ -58,6 +58,22 @@ module FeedHelper
     return output.to_s
   end
 
+  # averages a summed object over length
+  def object_average(object, length, comma_flag=false, round=nil)
+    object.attribute_names.each do |attr|
+      # only average non-null integer fields
+      if !object[attr].nil? and is_a_number?(object[attr])
+        if round
+          object[attr] = sprintf "%.#{round}f", (parsefloat(object[attr]) / length)
+        else
+          object[attr] = (parsefloat(object[attr]) / length).to_s
+        end
+        # replace decimals with commas if appropriate
+        object[attr] = object[attr].gsub(/\./, ',') if comma_flag
+      end
+    end
 
+    return object
+  end
 
 end
