@@ -104,8 +104,8 @@
       <file leaf-file-name="feed_helper.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/helpers/feed_helper.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.78571427" vertical-offset="1536" max-vertical-offset="1962">
-              <caret line="100" column="5" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.89285713" vertical-offset="1644" max-vertical-offset="2106">
+              <caret line="108" column="5" selection-start-line="108" selection-start-column="5" selection-end-line="108" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -1090,8 +1090,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/helpers/feed_helper.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.78571427" vertical-offset="1536" max-vertical-offset="1962">
-          <caret line="100" column="5" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.89285713" vertical-offset="1644" max-vertical-offset="2106">
+          <caret line="108" column="5" selection-start-line="108" selection-start-column="5" selection-end-line="108" selection-end-column="5" />
           <folding />
         </state>
       </provider>
