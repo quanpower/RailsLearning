@@ -275,4 +275,87 @@ module FeedHelper
     return timeslices
   end
 
+  # slice feed into medians
+  def feeds_into_medians(feeds, params)
+
+    # convert timescale (minutes) into seconds
+    seconds = params[:median].to_i * 60
+    # get floored time ranges
+    start_time = get_floored_time(feeds.first.created_at, seconds)
+    end_time = get_floored_time(feeds.last.created_at, seconds)
+
+    # create empty array with appropriate size
+    timeslices = Array.new((((end_time - start_time) / seconds).abs).floor)
+
+    # create a blank clone of the first feed so that we only get the necessary attributes
+    empty_feed = create_empty_clone(feeds.first)
+
+    # add feeds to array
+    feeds.each do |f|
+      i = ((f.created_at - start_time) / seconds).floor
+      f.created_at = start_time + i * seconds
+      # create multidimensional array
+      timeslices[i] = [] if timeslices[i].nil?
+      timeslices[i].push(f)
+    end
+
+    # keep track of whether numbers use commas as decimals
+    comma_flag = false
+
+    # fill in array
+    timeslices.each_index do |i|
+      # insert empty values
+      if timeslices[i].nil?
+        current_feed = empty_feed.dup
+        current_feed.created_at = (start_time + (i * seconds))
+        timeslices[i] = current_feed
+        # else get median values for the inner array
+      else
+
+        # create blank hash called 'fields' to hold data
+        fields = {}
+
+        # for each feed
+        timeslices[i].each do |f|
+
+          # for each attribute
+          f.attribute_names.each do |attr|
+            if attr.index('field')
+
+              # create blank array for each field
+              fields["#{attr}"] = [] if fields["#{attr}"].nil?
+
+              # push numeric field data onto its array
+              if is_a_number?(f[attr])
+                # set comma_flag once if we find a number with a comma
+                comma_flag = true if !comma_flag and f[attr].to_s.index(',')
+
+                fields["#{attr}"].push(parsefloat(f[attr]))
+              end
+
+            end
+          end
+
+        end
+
+        # sort fields arrays
+        fields.each_key do |key|
+          fields[key] = fields[key].compact.sort
+        end
+
+        # get the median
+        median_feed = empty_feed.dup
+        median_feed.created_at = timeslices[i].first.created_at
+        median_feed.attribute_names.each do |attr|
+          median_feed[attr] = object_median(fields[attr], comma_flag, params[:round]) if attr.index('field')
+        end
+
+        timeslices[i] = median_feed
+
+      end
+    end
+
+    return timeslices
+  end
+
 end
