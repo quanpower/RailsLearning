@@ -108,4 +108,38 @@ module FeedHelper
     return Time.at(floored_seconds - offset_seconds)
   end
 
+  # slice feed into timescales
+  def feeds_into_timescales(feeds, params)
+
+    # convert timescale (minutes) into seconds
+    seconds = params[:timescale].to_i * 60
+    # get floored time ranges
+    start_time = get_floored_time(feeds.first.created_at, seconds)
+    end_time = get_floored_time(feeds.last.created_at, seconds)
+
+    # create empty array with appropriate size
+    timeslices = Array.new((((end_time - start_time) / seconds).abs).floor)
+
+    # create a blank clone of the first feed so that we only get the necessary attributes
+    empty_feed = create_empty_clone(feeds.first)
+
+    # add feeds to array
+    feeds.each do |f|
+      i = ((f.created_at - start_time) / seconds).floor
+      f.created_at = start_time + i * seconds
+      timeslices[i] = f if timeslices[i].nil?
+    end
+
+    # fill in empty array elements
+    timeslices.each_index do |i|
+      if timeslices[i].nil?
+        current_feed = empty_feed.dup
+        current_feed.created_at = (start_time + (i * seconds))
+        timeslices[i] = current_feed
+      end
+    end
+
+    return timeslices
+  end
+
 end
