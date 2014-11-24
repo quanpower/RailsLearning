@@ -358,4 +358,14 @@ module FeedHelper
     return timeslices
   end
 
+  # checks for valid timescale
+  def timeparam_valid?(timeparam)
+    valid_minutes = [10, 15, 20, 30, 60, 240, 720, 1440]
+    if timeparam.present? && valid_minutes.include?(timeparam.to_i)
+      return true
+    else
+      return false
+    end
+  end
+
 end
